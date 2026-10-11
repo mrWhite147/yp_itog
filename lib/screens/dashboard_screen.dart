@@ -47,7 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Аналитическое распределение (fl_chart): Заказы vs Дефицит', 
+                            'Аналитическое распределение: Заказы и Дефицит', 
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           const SizedBox(height: 16),
