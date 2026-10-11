@@ -33,7 +33,7 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Управление пользователями и ролями (Только Администратор)')),
+      appBar: AppBar(title: const Text('Управление пользователями и ролями')),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(

@@ -16,21 +16,20 @@ class ResponsiveShell extends StatelessWidget {
     final isAdmin = auth.user?.role == Role.admin;
     final isManager = auth.user?.role == Role.manager;
 
-    // Вкладки строго под каждую роль!
     final destinations = isAdmin ? [
       const NavigationDestination(icon: Icon(Icons.analytics), label: 'Дашборд'),
       const NavigationDestination(icon: Icon(Icons.devices), label: 'Товары'),
       const NavigationDestination(icon: Icon(Icons.business), label: 'Бренды'),
-      const NavigationDestination(icon: Icon(Icons.manage_accounts), label: 'Пользователи'), // ТОЛЬКО АДМИН
+      const NavigationDestination(icon: Icon(Icons.manage_accounts), label: 'Пользователи'),
     ] : isManager ? [
       const NavigationDestination(icon: Icon(Icons.analytics), label: 'Дашборд'),
       const NavigationDestination(icon: Icon(Icons.devices), label: 'Товары'),
       const NavigationDestination(icon: Icon(Icons.business), label: 'Бренды'),
-      const NavigationDestination(icon: Icon(Icons.local_shipping), label: 'Поставщики'), // ТОЛЬКО МЕНЕДЖЕР
-      const NavigationDestination(icon: Icon(Icons.list_alt), label: 'Заказы'), // ТОЛЬКО МЕНЕДЖЕР
+      const NavigationDestination(icon: Icon(Icons.local_shipping), label: 'Поставщики'),
+      const NavigationDestination(icon: Icon(Icons.list_alt), label: 'Заказы'),
     ] : [
       const NavigationDestination(icon: Icon(Icons.storefront), label: 'Витрина'),
-      const NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Корзина'), // ТОЛЬКО ПОКУПАТЕЛЬ
+      const NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Корзина'),
     ];
 
     int currentIndex = 0;
