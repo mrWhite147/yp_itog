@@ -20,7 +20,7 @@ async function post(collection, data) {
 }
 
 async function run() {
-  console.log('⏳ Загружаем бренды и категории...');
+  console.log('Загружаем бренды и категории...');
 
   // 1. Создаем бренды (если еще нет)
   const apple = await post('manufacturers', { name: 'Apple', foundedYear: 1976, country: 'США' });
@@ -36,7 +36,7 @@ async function run() {
   const tvs = await post('categories', { name: 'Телевизоры' });
   const gaming = await post('categories', { name: 'Гейминг' });
 
-  console.log('⏳ Загружаем товары в каталог...');
+  console.log('Загружаем товары в каталог...');
 
   const products = [
     // Apple
@@ -64,7 +64,7 @@ async function run() {
     await post('products', p);
   }
 
-  console.log('\n🎉 Каталог успешно наполнен! Все 12 товаров созданы.');
+  console.log('\nКаталог успешно наполнен');
 }
 
 run();
