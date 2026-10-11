@@ -16,6 +16,7 @@ import 'screens/supplier_screens.dart';
 import 'screens/customer_screens.dart';
 import 'screens/order_screens.dart';
 import 'widgets/responsive_shell.dart';
+import 'screens/users_screen.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -29,6 +30,9 @@ GoRouter buildRouter(AuthNotifier auth) {
       final loggedIn = auth.isAuthenticated;
       final path = state.uri.path;
       final isAuthRoute = path == '/login' || path == '/register';
+      if (path.startsWith('/admin/users') && !auth.hasRole(Role.admin)) {
+        return '/forbidden';
+      }
 
       if (!loggedIn && !isAuthRoute) {
         return '/login?from=${Uri.encodeComponent(state.uri.toString())}';
@@ -79,6 +83,7 @@ GoRouter buildRouter(AuthNotifier auth) {
         navigatorKey: shellNavigatorKey,
         builder: (context, state, child) => ResponsiveShell(child: child),
         routes: [
+          GoRoute(path: '/admin/users', builder: (c, s) => const UsersScreen()),
           GoRoute(
             path: '/',
             builder: (c, s) => auth.hasRole(Role.manager)

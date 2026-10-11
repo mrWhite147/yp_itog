@@ -13,54 +13,55 @@ class ResponsiveShell extends StatelessWidget {
     final isMobile = width < 700;
     final location = GoRouterState.of(context).uri.path;
     final auth = context.watch<AuthNotifier>();
-    final isManager = auth.hasRole(Role.manager);
+    final isAdmin = auth.user?.role == Role.admin;
+    final isManager = auth.user?.role == Role.manager;
 
-    final destinations = isManager ? [
+    // Вкладки строго под каждую роль!
+    final destinations = isAdmin ? [
       const NavigationDestination(icon: Icon(Icons.analytics), label: 'Дашборд'),
       const NavigationDestination(icon: Icon(Icons.devices), label: 'Товары'),
-      const NavigationDestination(icon: Icon(Icons.category), label: 'Категории'),
       const NavigationDestination(icon: Icon(Icons.business), label: 'Бренды'),
-      const NavigationDestination(icon: Icon(Icons.local_shipping), label: 'Поставщики'),
-      const NavigationDestination(icon: Icon(Icons.people), label: 'Покупатели'),
-      const NavigationDestination(icon: Icon(Icons.list_alt), label: 'Заказы'),
+      const NavigationDestination(icon: Icon(Icons.manage_accounts), label: 'Пользователи'), // ТОЛЬКО АДМИН
+    ] : isManager ? [
+      const NavigationDestination(icon: Icon(Icons.analytics), label: 'Дашборд'),
+      const NavigationDestination(icon: Icon(Icons.devices), label: 'Товары'),
+      const NavigationDestination(icon: Icon(Icons.business), label: 'Бренды'),
+      const NavigationDestination(icon: Icon(Icons.local_shipping), label: 'Поставщики'), // ТОЛЬКО МЕНЕДЖЕР
+      const NavigationDestination(icon: Icon(Icons.list_alt), label: 'Заказы'), // ТОЛЬКО МЕНЕДЖЕР
     ] : [
       const NavigationDestination(icon: Icon(Icons.storefront), label: 'Витрина'),
-      const NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Корзина'),
+      const NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Корзина'), // ТОЛЬКО ПОКУПАТЕЛЬ
     ];
 
     int currentIndex = 0;
-    if (isManager) {
-      if (location.startsWith('/products')) {
-        currentIndex = 1;
-      } else if (location.startsWith('/categories')) {
-        currentIndex = 2;
-      } else if (location.startsWith('/manufacturers')) {
-        currentIndex = 3;
-      } else if (location.startsWith('/suppliers')) {
-        currentIndex = 4;
-      } else if (location.startsWith('/customers')) {
-        currentIndex = 5;
-      } else if (location.startsWith('/orders')) {
-        currentIndex = 6;
-      }
+    if (isAdmin) {
+      if (location.startsWith('/products')) currentIndex = 1;
+      else if (location.startsWith('/manufacturers')) currentIndex = 2;
+      else if (location.startsWith('/admin/users')) currentIndex = 3;
+    } else if (isManager) {
+      if (location.startsWith('/products')) currentIndex = 1;
+      else if (location.startsWith('/manufacturers')) currentIndex = 2;
+      else if (location.startsWith('/suppliers')) currentIndex = 3;
+      else if (location.startsWith('/orders')) currentIndex = 4;
     } else {
-      if (location.startsWith('/cart')) {
-        currentIndex = 1;
-      }
+      if (location.startsWith('/cart')) currentIndex = 1;
     }
 
     void onNavigate(int index) {
-      if (isManager) {
-        if (index == 0) { context.go('/'); }
-        if (index == 1) { context.go('/products'); }
-        if (index == 2) { context.go('/categories'); }
-        if (index == 3) { context.go('/manufacturers'); }
-        if (index == 4) { context.go('/suppliers'); }
-        if (index == 5) { context.go('/customers'); }
-        if (index == 6) { context.go('/orders'); }
+      if (isAdmin) {
+        if (index == 0) context.go('/');
+        if (index == 1) context.go('/products');
+        if (index == 2) context.go('/manufacturers');
+        if (index == 3) context.go('/admin/users');
+      } else if (isManager) {
+        if (index == 0) context.go('/');
+        if (index == 1) context.go('/products');
+        if (index == 2) context.go('/manufacturers');
+        if (index == 3) context.go('/suppliers');
+        if (index == 4) context.go('/orders');
       } else {
-        if (index == 0) { context.go('/'); }
-        if (index == 1) { context.go('/cart'); }
+        if (index == 0) context.go('/');
+        if (index == 1) context.go('/cart');
       }
     }
 
